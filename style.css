@@ -319,3 +319,23 @@ padding:5px 10px;
 {
 color:#f36175;
 }
+
+/* unvisited link */
+a:link {
+    color: rgb(219, 219, 219);
+  }
+  
+  /* visited link */
+  a:visited {
+    color: rgb(156, 156, 156);
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: hotpink;
+  }
+  
+  /* selected link */
+  a:active {
+    color: blue;
+  }
