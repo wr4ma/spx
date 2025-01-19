@@ -1,57 +1,54 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
+	
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
   <meta charset="UTF-8">
-  <meta name="viewport" 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
   <title>Lead Monitoring</title>
   <link rel='stylesheet' href='https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'><link rel="stylesheet" href="./style.css">
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
-
-    <nav id="mainmenu">
-      <h2>Menu</h2>
-      <ul>
-        <li>Main Page</li>
-        <li>Setting</li>
-        <li>Logout</li>
-      </ul>
-    </nav>
+<section id="mobilescreen">
+  <section id="maincontainer">
+    
     <section id="mainscreen">
       <header>
-        <i class="fa fa-align-justify" id="menu"></i>
+        <i onClick="refreshPage()" class="fa fa-refresh" id="menu"></i>
         <h1>Lead Monitoring</h1>
-        <i class="fa fa-fa-user" id="menu"></i>
+        <a href="/index.html">
+        <i class="fa fa-home" id="menu"></i></a>
       </header>
       <section id="container">
-        <p class="intro">Hello, Welcome back Wildhan!</p>
+        <p class="intro">Welcome Back, Wildhan!</p>
         <ul id="listlink">
-          <li><a href="/spx/gap.html">
-            <div></div><span class="titles"><i class="fa fa-bar-chart-o"></i>Inbound & Outbound</span></a><span class="offdata">*</span>
+          <li><a href="/gap-ib-ob.html">
+            <div></div><span class="titles"><i class="fa fa-bar-chart-o"></i>Actual Inbound / Outbound</span><span class="offdata">✨</span></a>
           </li>
-          <li>
-            <div></div><span class="titles"><i class="fa fa-truck"></i>Cek Antrian</span><span class="offdata">12</span>
+          <li><a href="/dock.html">
+            <div></div><span class="titles"><i class="fa fa-truck"></i>Docking</span><span class="offdata"></span></a>
           </li>
-          <li>
-            <div></div><span class="titles"><i class="fa fa-bar-chart-o"></i>Hourly</span><span class="offdata">*</span>
+          <li><a href="/hourly.html">
+            <div></div><span class="titles"><i class="fa fa-clock-o"></i>Hourly</span><span class="offdata"></span></a>
           </li>
-          <li>
-            <div></div><span class="titles"><i class="fa fa-tags"></i>Kumpulan Link Penting</span><span class="offdata">11</span>
+          <li><a href="/plan-mp.html">
+            <div></div><span class="titles"><i class="fa fa-users"></i>Dedicated & DW</span><span class="offdata"></span></a>
           </li>
-          <li>
-            <div></div><span class="titles"><i class="fa fa-users"></i>Dedicated & DW</span><span class="offdata">122</span>
+          <li><a href="/performance.html">
+            <div></div><span class="titles"><i class="fa fa-bullhorn"></i>Top Operator Performance</span><span class="offdata">⚠️</span></a>
           </li>
-          <li>
-            <div></div><span class="titles"><i class="fa fa-info-circle"></i>Other</span><span class="offdata">1</span>
+          <li><a href="/bookmark.html">
+            <div></div><span class="titles"><i class="fa fa-bookmark"></i>List Link Penting</span><span class="offdata"></span></a>
           </li>
         </ul>
       </section>
       <footer>
-        <nav><button id="showcode">Logout</button><button id="buyproduct">Refresh</button></nav>
+        <nav><a href="https://wa.me/6287899604277/"><button id="showcode">Data error/tidak tampil?<br>klik disini.</button></a></nav>
       </footer>
     </section>
+  </section>
+</section>
 <!-- partial -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="./script.js"></script>
 

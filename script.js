@@ -11,4 +11,6 @@ $("#menu").click(function(){
   $("#mainscreen").toggleClass("movemaincontainer");
 });
 
-
+function refreshPage(){
+    window.location.reload();
+} 
