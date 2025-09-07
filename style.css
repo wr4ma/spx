@@ -1,0 +1,222 @@
+/* Custom styles for the graph container to ensure it's responsive */
+#chart-container {
+    position: relative;
+    height: 300px;
+}
+
+@media (min-width: 640px) {
+    #chart-container {
+        height: 400px;
+    }
+}
+
+/* Style for the sidebar menu */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 256px;
+    height: 100%;
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Desktop sidebar layout */
+@media (min-width: 1024px) {
+    .sidebar {
+        transform: translateX(0);
+        position: static;
+        z-index: auto;
+        width: 256px;
+        height: auto;
+        box-shadow: none;
+    }
+
+    .main-content {
+        padding-left: 0;
+    }
+}
+
+/* Keyframes for blinking animation */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.animate-blink {
+    animation: blink 1.5s linear infinite;
+}
+
+/* Style for the table */
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border-radius: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #4b5563;
+}
+
+th {
+    background-color: #4b5563;
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+tr:nth-child(even) {
+    background-color: #1f2937;
+}
+
+tr:nth-child(odd) {
+    background-color: #374151;
+}
+
+th, td {
+    color: #d1d5db;
+}
+
+.manpower-plan-cell {
+    background-color: rgba(255, 100, 0, 0.1);
+}
+
+.manpower-actual-cell {
+    background-color: rgba(0, 200, 0, 0.1);
+}
+
+/* Floating Refresh Button */
+#refresh-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+
+#refresh-btn {
+    background-color: rgba(59, 130, 246, 0.7);
+    color: white;
+    padding: 1rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+#refresh-btn:hover {
+    background-color: rgba(59, 130, 246, 1);
+    transform: scale(1.1);
+}
+
+#refresh-message {
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #374151;
+    color: #d1d5db;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#refresh-message.visible {
+    opacity: 1;
+}
+
+/* Added class for cell coloring */
+.date-cell {
+    background-color: #1a202c;
+}
+
+.ops-info-cell {
+    background-color: rgba(67, 135, 230, 0.15);
+}
+
+.purpose-cell {
+    background-color: rgba(246, 173, 85, 0.15);
+}
+
+/* PIC Task List Item Styling */
+#pic-task-list li {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #374151;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 8px solid #4B5563;
+    border-top: 8px solid #3B82F6;
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
