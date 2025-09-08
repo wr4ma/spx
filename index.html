@@ -70,7 +70,7 @@
                         </li>
                         <li class="mb-4">
                             <a href="#check-operator-profile" class="nav-link flex items-center p-3 rounded-xl text-gray-300 hover:bg-gray-700 transition-colors duration-200 font-semibold" data-target="check-operator-profile-content">
-                                <svg xmlns="http://www.w3.000000000000/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                                 Check Operator Profile
@@ -111,7 +111,6 @@
             <div id="content-container">
                 <div id="dashboard-content" class="transition-opacity duration-500 ease-in-out">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-
                         <div class="bg-green-500 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105">
                             <div class="flex items-center justify-between mb-2">
                                 <h3 class="text-lg font-semibold uppercase">FM Projection</h3>
@@ -129,7 +128,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM15.75 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM12 11.25V9m-4.5-2.25h9a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18V9.75a2.25 2.25 0 012.25-2.25z" />
                                 </svg>
-                        </div>
+                            </div>
                             <p id="upcoming-dc-data" class="text-4xl font-bold">Memuat...</p>
                             <p class="text-sm font-light opacity-80 mt-2">Data berdasarkan Tarikan Outbound Yard</p>
                         </div>
@@ -191,9 +190,7 @@
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
-
                 </div>
 
                 <div id="reports-content" class="hidden opacity-0 transition-opacity duration-500 ease-in-out">
@@ -220,9 +217,9 @@
                         <div class="table-container">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead id="manpower-table-head" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    </thead>
+                                </thead>
                                 <tbody id="manpower-table-body">
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -241,9 +238,9 @@
                         <div class="table-container">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead id="hourly-table-head" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    </thead>
+                                </thead>
                                 <tbody id="hourly-table-body">
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -254,7 +251,7 @@
                     <p class="text-gray-400 text-sm mb-4">Wajib Report Di Grup PIC jika sudah Done.</p>
                     <div class="bg-gray-700 rounded-2xl p-6">
                         <ul id="pic-task-list" class="space-y-4">
-                            </ul>
+                        </ul>
                     </div>
                 </div>
                 
@@ -266,17 +263,17 @@
                         <label for="filter-role-operator" class="text-gray-300 font-medium whitespace-nowrap">Operator:</label>
                         <select id="filter-role-operator" class="p-2 rounded-lg bg-gray-700 text-gray-100 border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="Semua">Semua</option>
-                            <option value="Dedicated">Dedicated</option>
-                            <option value="DW">DW</option>
+                            <option value="Dedicate">Dedicate</option>
+                            <option value="DW">Daily Worker</option>
                         </select>
                         <button id="apply-filter-btn-operator" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 whitespace-nowrap">Apply</button>
                     </div>
                     <div class="bg-gray-700 rounded-2xl p-6 table-container">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead id="operator-table-head" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                </thead>
+                            </thead>
                             <tbody id="operator-table-body">
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -310,15 +307,13 @@
                         </div>
                         <a href="https://wa.me/6287899604277" target="_blank" class="mt-4 flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                <path d="M12.04 2.87c-5.06 0-9.17 4.1-9.17 9.17 0 1.54.4 2.99 1.15 4.3l-1.18 4.31 4.4-1.15c1.24.68 2.65 1.04 4.09 1.04 5.06 0 9.17-4.1 9.17-9.17 0-5.06-4.11-9.17-9.17-9.17zm4.72 13.92c-.28.18-.58.3-.9.34s-.65.04-.97.02c-.31-.02-.63-.07-.95-.12-.32-.05-.63-.12-.93-.24-.3-.11-.58-.26-.85-.43-.27-.18-.52-.38-.75-.6-.23-.22-.43-.46-.6-.73-.17-.27-.29-.54-.42-.85-.13-.31-.2-.64-.26-.97s-.05-.65-.02-.97.08-.63.13-.94.13-.6.2-.89c-.07-.3.16-.58.26-.85s-.23-.52.4-.75c.18-.23.38-.43.6-.6.22-.18.46-.35.73-.47s.54-.21.85-.29c.31-.08.64-.13.97-.18s.65-.05.97-.02c.32.02.63.08.95.13s.63.12.93.24c.3.11.58.26.85.43.27.18.52.38.75.6.23.22.43.46.6.73.17.27.29.54.42.85.13.31.2.64.26.97.06.33.05.65.02.97s-.08.63-.13.94-.13.6-.2.89c-.07.3-.16.58-.26.85-.11.3-.26.58-.43.85z" />
+                                <path d="M12.04 2.87c-5.06 0-9.17 4.1-9.17 9.17 0 1.54.4 2.99 1.15 4.3l-1.18 4.31 4.4-1.15c1.24.68 2.65 1.04 4.09 1.04 5.06 0 9.17-4.1 9.17-9.17 0-5.06-4.11-9.17-9.17-9.17zm4.72 13.92c-.28.18-.58.3-.9.34s-.65.04-.97.02c-.31-.02-.63-.07-.95-.12-.32-.05-.63-.12-.93-.24-.3-.11-.58-.26-.85-.43-.27-.18-.52-.38-.75-.6-.23-.22-.43-.46-.6-.73-.17-.27-.29-.54-.42-.85-.13-.31-.2-.64-.26-.97s-.05-.65-.02-.97.08-.63.13-.94.13-.6.2-.89c.07-.3.16-.58.26-.85s-.23-.52.4-.75c.18-.23.38-.43.6-.6.22-.18.46-.35.73-.47s.54-.21.85-.29c.31-.08.64-.13.97-.18s.65-.05.97-.02c.32.02.63.08.95.13s.63.12.93.24c.3.11.58.26.85.43.27.18.52.38.75.6.23.22.43.46.6.73.17.27.29.54.42.85.13.31.2.64.26.97.06.33.05.65.02.97s-.08.63-.13.94-.13.6-.2.89c-.07.3-.16.58-.26.85-.11.3-.26.58-.43.85z" />
                             </svg>
                             <span>Hubungi via WhatsApp</span>
                         </a>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 
@@ -332,6 +327,5 @@
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>

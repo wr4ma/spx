@@ -23,9 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const refreshBtn = document.getElementById('refresh-btn');
     const refreshMessage = document.getElementById('refresh-message');
     const loadingOverlay = document.getElementById('loading-overlay');
-    const operatorDateInput = document.getElementById('filter-date-operator');
-    const operatorRoleSelect = document.getElementById('filter-role-operator');
-    const applyFilterBtnOperator = document.getElementById('apply-filter-btn-operator');
     
     let manpowerData = [];
     let hourlyData = [];
@@ -289,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         for (let i = 1; i < manpowerData.length; i++) {
             const row = manpowerData[i];
-            const rowDateStr = row[17] ? row[17].trim().replace(/^"|"$/g, '') : '';
+            const rowDateStr = row[17] ? row[17].trim().replace(/^"|"$/g, '') : ''; 
             
             if (!rowDateStr) continue;
 
@@ -333,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (taskName) {
                     const iconColor = isCompleted ? 'text-green-500' : 'text-red-500';
-                    const icon = isCompleted ?
+                    const icon = isCompleted ? 
                         `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ${iconColor} flex-shrink-0">
                             <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-1.042l-4.242 4.242-1.957-1.957a.75.75 0 0 0-1.06 1.06l2.5 2.5a.75.75 0 0 0 1.06 0l4.75-4.75Z" clip-rule="evenodd" />
                         </svg>` :
@@ -419,6 +416,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const operatorDateInput = document.getElementById('filter-date-operator');
             const selectedDate = operatorDateInput.value;
 
+            const operatorRoleSelect = document.getElementById('filter-role-operator');
+            const selectedRole = operatorRoleSelect.value;
+
             const filteredData = [];
             if(operatorData[0]) filteredData.push(operatorData[0]);
             if(operatorData[1]) filteredData.push(operatorData[1]);
@@ -429,12 +429,14 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 2; i < operatorData.length; i++) {
                 const row = operatorData[i];
                 const rowDateStr = row[30] ? row[30].trim().replace(/^"|"$/g, '') : '';
-                
+                const rowRole = row[33] ? row[33].trim().replace(/^"|"$/g, '') : '';
+
                 if (!rowDateStr) continue;
 
                 const isDateMatch = rowDateStr === selectedDateNormalized;
+                const isRoleMatch = selectedRole === 'Semua' || rowRole === selectedRole;
 
-                if (isDateMatch) {
+                if (isDateMatch && isRoleMatch) {
                     filteredData.push(row);
                 }
             }
@@ -574,6 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(showMessage, 3000);
 
     setTimeout(() => {
-        refreshMessage.classList.remove('visible');
+         refreshMessage.classList.remove('visible');
     }, 1000);
 });
