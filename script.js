@@ -1,3 +1,7 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getDatabase, ref, onValue, onDisconnect, set } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebar-overlay');
@@ -5,8 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('close-sidebar-btn');
     const navLinks = document.querySelectorAll('.nav-link');
     const contentContainer = document.getElementById('content-container');
-    const fmProjectionData = document.getElementById('fm-projection-data');
-    const upcomingDcData = document.getElementById('upcoming-dc-data');
+    
+    const date1Label = document.getElementById('date-1-label');
+    const fmProjectionValue1 = document.getElementById('fm-projection-value-1');
+    const fmActualValue1 = document.getElementById('fm-actual-value-1');
+    
+    const date2Label = document.getElementById('date-2-label');
+    const fmProjectionValue2 = document.getElementById('fm-projection-value-2');
+    const fmActualValue2 = document.getElementById('fm-actual-value-2');
+
+    const upcomingDcTotal = document.getElementById('upcoming-dc-total');
+    const upcomingDcS01 = document.getElementById('upcoming-dc-s01');
+    const upcomingDcS02 = document.getElementById('upcoming-dc-s02');
+    const upcomingDcS03 = document.getElementById('upcoming-dc-s03');
+    
+    const operatorOutCount = document.getElementById('operator-out-count');
+    
+    const onlineCountEl = document.getElementById('online-count');
+
     const pendingPackedData = document.getElementById('pending-packed-data');
     const pendingLoadingData = document.getElementById('pending-loading-data');
     const actualInboundData = document.getElementById('actual-inbound-data');
@@ -24,11 +44,73 @@ document.addEventListener('DOMContentLoaded', () => {
     const refreshMessage = document.getElementById('refresh-message');
     const loadingOverlay = document.getElementById('loading-overlay');
     
+    const searchInput = document.getElementById('ops-id-search-input');
+    const profileCard = document.getElementById('operator-profile-card');
+    const notFoundMessage = document.getElementById('profile-not-found');
+    const profileImage = document.getElementById('profile-image');
+    const profileOpsId = document.getElementById('profile-opsid');
+    const profileName = document.getElementById('profile-name');
+    const profileRole = document.getElementById('profile-role');
+    const profileVendor = document.getElementById('profile-vendor');
+
     let manpowerData = [];
     let hourlyData = [];
     let operatorData = [];
-    
-    let trafficChart;
+    let operatorProfileData = [];
+    let detailedPendingData = {};
+
+    const initializeFirebasePresence = () => {
+         const firebaseConfig = {
+            apiKey: "AIzaSyAI4L6OfH_xbwae7yKYKv81V7w7m4zW4Es",
+            authDomain: "bandung-monitoring-dashboard.firebaseapp.com",
+            databaseURL: "https://bandung-monitoring-dashboard-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bandung-monitoring-dashboard",
+            storageBucket: "bandung-monitoring-dashboard.appspot.com",
+            messagingSenderId: "213657068868",
+            appId: "1:213657068868:web:c4d3abb788663545a2a311",
+            measurementId: "G-ZXSBFQWNG8"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const database = getDatabase(app);
+
+            const presenceRef = ref(database, 'presence');
+
+            signInAnonymously(auth)
+                .then(({ user }) => {
+                    const myConnectionsRef = ref(database, `presence/${user.uid}`);
+                    
+                    const connectedRef = ref(database, '.info/connected');
+
+                    onValue(connectedRef, (snap) => {
+                        if (snap.val() === true) {
+                            set(myConnectionsRef, true);
+                            onDisconnect(myConnectionsRef).remove();
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error("Firebase anonymous sign-in failed", error);
+                });
+            
+            onValue(presenceRef, (snap) => {
+                const count = snap.exists() ? snap.size : 0;
+                if (onlineCountEl) {
+                    onlineCountEl.textContent = count;
+                }
+            });
+
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            if (onlineCountEl) {
+                onlineCountEl.textContent = 'N/A';
+            }
+        }
+    };
+
+    initializeFirebasePresence();
     
     const googleSheetId = '19SS9GPTAkEoEQbw9QEaUMDtNKUuAqotZdRW7UoYaNDQ';
     const googleSheetGid = '443866641';
@@ -44,72 +126,168 @@ document.addEventListener('DOMContentLoaded', () => {
             const rows = data.split('\n').map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
 
             const formatNumber = (value) => {
-                const cleanedValue = value.trim().replace(/^"|"$/g, '').replace(/,/g, '');
+                const cleanedValue = (value || '').trim().replace(/^"|"$/g, '').replace(/,/g, '');
                 const numericValue = parseInt(cleanedValue, 10);
                 if (isNaN(numericValue)) return value;
                 return numericValue.toLocaleString('id-ID');
             };
 
-            if (rows[1] && rows[1][0]) {
-                const rawValue = rows[1][0].trim().replace('%', '');
-                fmProjectionData.textContent = formatNumber(rawValue);
-            } else {
-                console.error('Could not find data for cell A2.');
+            if (rows[0] && rows[0][0] && rows[1] && rows[1][0]) {
+                const projectionText1 = rows[0][0].trim().replace(/^"|"$/g, '');
+                const projectionDateStr1 = projectionText1.split(':')[1]?.trim() || '';
+                date1Label.textContent = projectionDateStr1;
+                fmProjectionValue1.textContent = formatNumber(rows[1][0]);
+            }
+            if (rows[4] && rows[4][0] && rows[5] && rows[5][0]) {
+                fmActualValue1.textContent = formatNumber(rows[5][0]);
+            }
+            if (rows[2] && rows[2][0] && rows[3] && rows[3][0]) {
+                const projectionText2 = rows[2][0].trim().replace(/^"|"$/g, '');
+                const projectionDateStr2 = projectionText2.split(':')[1]?.trim() || '';
+                date2Label.textContent = projectionDateStr2;
+                fmProjectionValue2.textContent = formatNumber(rows[3][0]);
+            }
+            if (rows[6] && rows[6][0] && rows[7] && rows[7][0]) {
+                fmActualValue2.textContent = formatNumber(rows[7][0]);
             }
 
-            if (rows[1] && rows[1][1]) {
-                upcomingDcData.textContent = formatNumber(rows[1][1].trim());
-            } else {
-                console.error('Could not find data for cell B2.');
-            }
+            if (rows[1] && rows[1][1]) upcomingDcTotal.textContent = formatNumber(rows[1][1]);
+            if (rows[3] && rows[3][1]) upcomingDcS01.textContent = formatNumber(rows[3][1]);
+            if (rows[5] && rows[5][1]) upcomingDcS02.textContent = formatNumber(rows[5][1]);
+            if (rows[7] && rows[7][1]) upcomingDcS03.textContent = formatNumber(rows[7][1]);
+
+            if (rows[0] && rows[0][33]) operatorOutCount.textContent = formatNumber(rows[0][33]);
             
-            const productivityData = {
-                actualInbound: rows[1][3],
-                gapInbound: rows[2][3],
-                actualOutbound: rows[3][3],
-                gapOutbound: rows[4][3],
-            };
-            
+            const productivityData = { actualInbound: rows[1][3], gapInbound: rows[2][3], actualOutbound: rows[3][3], gapOutbound: rows[4][3] };
             if (productivityData.actualInbound) actualInboundData.textContent = formatNumber(productivityData.actualInbound);
             if (productivityData.actualOutbound) actualOutboundData.textContent = formatNumber(productivityData.actualOutbound);
             if (productivityData.gapInbound) gapInboundData.textContent = formatNumber(productivityData.gapInbound);
             if (productivityData.gapOutbound) gapOutboundData.textContent = formatNumber(productivityData.gapOutbound);
 
-            const pendingData = {
-                pendingPacked: rows[1][5],
-                pendingLoading: rows[2][5],
-                antrian: rows[1][7],
-                prosesBongkar: rows[2][7],
-            };
-
+            const pendingData = { pendingPacked: rows[1][5], pendingLoading: rows[2][5], antrian: rows[1][7], prosesBongkar: rows[2][7] };
             if (pendingData.pendingPacked) pendingPackedData.textContent = formatNumber(pendingData.pendingPacked);
             if (pendingData.pendingLoading) pendingLoadingData.textContent = formatNumber(pendingData.pendingLoading);
             if (pendingData.antrian) antrianData.textContent = formatNumber(pendingData.antrian);
             if (pendingData.prosesBongkar) prosesBongkarData.textContent = formatNumber(pendingData.prosesBongkar);
 
+            const opsCol = 44;
+            const nameCol = 45;
+            const vendorCol = 46;
+            const roleCol = 47;
+            const photoCol = 48;
+            
+            operatorProfileData = rows.slice(2).map(row => ({
+                opsId: (row[opsCol] || '').trim(),
+                name: (row[nameCol] || '').trim(),
+                vendor: (row[vendorCol] || '').trim(),
+                role: (row[roleCol] || '').trim(),
+                photoUrl: (row[photoCol] || '').trim()
+            }));
+            
+            const innerData = [];
+            const outterData = [];
+            for(let i=2; i < rows.length; i++) {
+                const station = rows[i][51] ? rows[i][51].trim() : '';
+                if (station) {
+                    innerData.push({ station: station, qty: formatNumber(rows[i][52]) });
+                } else {
+                    break;
+                }
+            }
+            for(let i=2; i < rows.length; i++) {
+                const station = rows[i][53] ? rows[i][53].trim() : '';
+                if (station) {
+                    outterData.push({ station: station, qty: formatNumber(rows[i][54]) });
+                } else {
+                    break;
+                }
+            }
+
+            detailedPendingData = {
+                inner: rows[1][56] ? formatNumber(rows[1][56]) : 'N/A',
+                outter: rows[2][56] ? formatNumber(rows[2][56]) : 'N/A',
+                total: rows[3][56] ? formatNumber(rows[3][56]) : 'N/A',
+                lastUpdate: rows[4][56] ? rows[4][56].trim() : 'N/A',
+                innerTable: innerData,
+                outterTable: outterData,
+            };
+
             manpowerData = rows.slice(1);
             hourlyData = rows.slice(1);
             operatorData = rows;
             
-            if (currentContent.id === 'reports-content') {
-                initializeManpowerPlan();
-            } else if (currentContent.id === 'settings-content') {
-                initializeHourlyReport();
-            } else if (currentContent.id === 'pictask-content') {
-                fetchPicTasks();
-            } else if (currentContent.id === 'operator-list-content') {
-                initializeOperatorList();
+            const currentVisibleContent = document.querySelector('#content-container > div:not(.hidden)');
+            if (currentVisibleContent) {
+                 if (currentVisibleContent.id === 'reports-content') initializeManpowerPlan();
+                 else if (currentVisibleContent.id === 'settings-content') initializeHourlyReport();
+                 else if (currentVisibleContent.id === 'pictask-content') fetchPicTasks();
+                 else if (currentVisibleContent.id === 'operator-list-content') initializeOperatorList();
+                 else if (currentVisibleContent.id === 'detailed-pending-content') renderDetailedPendingPage(detailedPendingData);
             }
+
         } catch (error) {
             console.error('There was a problem fetching the Google Sheet data:', error);
-            const tableBody = document.getElementById('manpower-table-body');
-            if (tableBody) {
-                tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-red-400">Gagal memuat data. Mohon periksa koneksi internet atau tautan Google Sheet.</td></tr>`;
-            }
         } finally {
             loadingOverlay.classList.add('hidden');
         }
     }
+    
+    const renderDetailedPendingPage = (data) => {
+        document.getElementById('pending-inner-total').textContent = data.inner;
+        document.getElementById('pending-outter-total').textContent = data.outter;
+        document.getElementById('pending-grand-total').textContent = data.total;
+        document.getElementById('pending-last-update').textContent = `Last Update : ${data.lastUpdate}`;
+
+        const innerTableBody = document.getElementById('detailed-pending-inner-body');
+        if (innerTableBody) {
+            innerTableBody.innerHTML = '';
+            data.innerTable.forEach(item => {
+                const row = `<tr><td class="px-6 py-4 text-left">${item.station}</td><td class="px-6 py-4 font-bold">${item.qty}</td></tr>`;
+                innerTableBody.innerHTML += row;
+            });
+        }
+
+        const outterTableBody = document.getElementById('detailed-pending-outter-body');
+        if (outterTableBody) {
+            outterTableBody.innerHTML = '';
+            data.outterTable.forEach(item => {
+                const row = `<tr><td class="px-6 py-4 text-left">${item.station}</td><td class="px-6 py-4 font-bold">${item.qty}</td></tr>`;
+                outterTableBody.innerHTML += row;
+            });
+        }
+    }
+    
+    const searchOperator = () => {
+        const query = searchInput.value.trim().toLowerCase();
+        if (query === '') {
+            profileCard.classList.add('hidden');
+            notFoundMessage.classList.add('hidden');
+            return;
+        }
+
+        const result = operatorProfileData.find(op => op.opsId.toLowerCase() === query);
+
+        if (result) {
+            profileOpsId.textContent = result.opsId;
+            profileName.textContent = result.name;
+            profileRole.textContent = result.role;
+            profileVendor.textContent = `Vendor: ${result.vendor}`;
+            const photoIdMatch = result.photoUrl.match(/id=([a-zA-Z0-9_-]+)/);
+            if (photoIdMatch && photoIdMatch[1]) {
+                profileImage.src = `https://lh3.googleusercontent.com/d/${photoIdMatch[1]}`;
+            } else {
+                profileImage.src = 'https://placehold.co/400x400/374151/E5E7EB?text=Photo';
+            }
+            
+            profileCard.classList.remove('hidden');
+            notFoundMessage.classList.add('hidden');
+        } else {
+            profileCard.classList.add('hidden');
+            notFoundMessage.classList.remove('hidden');
+        }
+    };
+    
+    searchInput.addEventListener('input', searchOperator);
     
     const renderHourlyTable = (data) => {
         const tableHead = document.getElementById('hourly-table-head');
@@ -533,6 +711,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     fetchPicTasks();
                 }
 
+                if (targetId === 'detailed-pending-content') {
+                    initializeDetailedPendingPage();
+                }
+
                 if (targetId === 'operator-list-content') {
                     initializeOperatorList();
                     const operatorRoleSelect = document.getElementById('filter-role-operator');
@@ -550,6 +732,51 @@ document.addEventListener('DOMContentLoaded', () => {
             currentContent.addEventListener('transitionend', transitionEndHandler);
         });
     });
+
+    const populateShortcuts = () => {
+        const shortcutGrid = document.getElementById('shortcut-grid');
+        const sidebarNavLinks = document.querySelectorAll('#sidebar-nav .nav-link');
+        
+        if (!shortcutGrid) return;
+        shortcutGrid.innerHTML = '';
+
+        sidebarNavLinks.forEach(link => {
+            const targetId = link.dataset.target;
+            
+            if (targetId !== 'contact-dev-content') {
+                const linkText = link.textContent.trim();
+                const linkIcon = link.querySelector('svg');
+
+                const shortcutButton = document.createElement('button');
+                shortcutButton.className = 'flex flex-col items-center justify-center text-center p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500';
+                shortcutButton.dataset.target = targetId;
+                
+                if (linkIcon) {
+                    const iconClone = linkIcon.cloneNode(true);
+                    iconClone.classList.remove('w-5', 'h-5', 'mr-3');
+                    iconClone.classList.add('w-8', 'h-8', 'mb-2');
+                    shortcutButton.appendChild(iconClone);
+                }
+                
+                const textSpan = document.createElement('span');
+                textSpan.className = 'text-xs font-semibold text-gray-300';
+                textSpan.textContent = linkText;
+                shortcutButton.appendChild(textSpan);
+
+                shortcutButton.addEventListener('click', () => {
+                    const originalLink = document.querySelector(`.nav-link[data-target="${targetId}"]`);
+                    if (originalLink) {
+                        originalLink.click();
+                    }
+                });
+
+                shortcutGrid.appendChild(shortcutButton);
+            }
+        });
+    };
+
+    populateShortcuts();
+
 
     refreshBtn.addEventListener('click', () => {
         const currentContentId = currentContent.id;
@@ -578,4 +805,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
          refreshMessage.classList.remove('visible');
     }, 1000);
+
+    const initializeDetailedPendingPage = () => {
+        renderDetailedPendingPage(detailedPendingData);
+    }
 });

@@ -6,7 +6,6 @@
     <title>Bandung DC Monitoring Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-900 text-gray-100 transition-colors duration-300 font-sans p-4 md:p-8">
 
@@ -39,7 +38,7 @@
                         <li class="mb-4">
                             <a href="#reports" class="nav-link flex items-center p-3 rounded-xl text-gray-300 hover:bg-gray-700 transition-colors duration-200 font-semibold" data-target="reports-content">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 10a4 4 0 11-8 0 4 4 0 018 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v.75m-3.75 6.25a.75.75 0 01-.75-.75V19a2.25 2.25 0 012.25-2.25h1.5a2.25 2.25 0 012.25 2.25v1.25a.75.75 0 01-.75.75H8.25z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 10a4 4 0 11-8 0 4 4 0 018 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v.75m-3.75 6.25a.75.75 0 01-.75-.75V19a2.25 2.25 0 012.25-2.25h1.5a2.25 2.25 0 012.25 2.25v1.25a.75.75 0 01-.75-.75H8.25z" />
                                 </svg>
                                 Manpower Plan
                             </a>
@@ -50,6 +49,14 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 Hourly Performance Report
+                            </a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="#detailed-pending" class="nav-link flex items-center p-3 rounded-xl text-gray-300 hover:bg-gray-700 transition-colors duration-200 font-semibold" data-target="detailed-pending-content">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-3">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5v-1.875a3.375 3.375 0 0 0 3.375-3.375h1.5a1.125 1.125 0 0 1 1.125 1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H3.375m15.75 9.75v-4.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H3.375" />
+                                </svg>
+                                Detailed Pending Loading
                             </a>
                         </li>
                         <li class="mb-4">
@@ -93,104 +100,193 @@
         <div class="flex-grow p-6 md:p-12 transition-colors duration-300">
             
             <header class="mb-10 flex items-center justify-between">
-                <button id="open-sidebar-btn" class="lg:hidden text-gray-400 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
+                <div class="w-20">
+                    <button id="open-sidebar-btn" class="lg:hidden text-gray-400 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
+            
                 <div class="flex-grow text-center">
                     <h1 class="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight">Floor Status Monitoring</h1>
                     <p class="text-lg text-gray-400">Real-time overview of Bandung DC operational floor status.</p>
+                    <div id="online-counter-container" class="mt-2 flex items-center justify-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-green-400 animate-blink"></span>
+                        <span id="online-count" class="text-lg font-bold text-green-400">0</span>
+                        <span class="text-base text-gray-400">Online</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-lg font-bold text-red-500">LIVE</span>
-                    <span class="w-3 h-3 rounded-full bg-red-500 animate-blink"></span>
+            
+                <div class="w-20 text-right"> 
+                    <div class="inline-flex items-center gap-2">
+                        <span class="text-lg font-bold text-red-500">LIVE</span>
+                        <span class="w-3 h-3 rounded-full bg-red-500 animate-blink"></span>
+                    </div>
                 </div>
             </header>
 
             <div id="content-container">
                 <div id="dashboard-content" class="transition-opacity duration-500 ease-in-out">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                        <div class="bg-green-500 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="text-lg font-semibold uppercase">FM Projection</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM15.75 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM18.75 6.75h-.75V3a1.5 1.5 0 00-1.5-1.5h-7.5a1.5 1.5 0 00-1.5 1.5v3.75H4.5A2.25 2.25 0 002.25 9v3.75z" />
-                                </svg>
-                            </div>
-                            <p id="fm-projection-data" class="text-4xl font-bold">Memuat...</p>
-                            <p class="text-sm font-light opacity-80 mt-2">Data berdasarkan Projection FM Alert</p>
-                        </div>
 
-                        <div class="bg-blue-500 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="text-lg font-semibold uppercase">UPCOMING DC</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM15.75 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM12 11.25V9m-4.5-2.25h9a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18V9.75a2.25 2.25 0 012.25-2.25z" />
-                                </svg>
-                            </div>
-                            <p id="upcoming-dc-data" class="text-4xl font-bold">Memuat...</p>
-                            <p class="text-sm font-light opacity-80 mt-2">Data berdasarkan Tarikan Outbound Yard</p>
-                        </div>
-
-                        <div class="bg-purple-600 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="text-lg font-semibold uppercase">PRODUCTIVITY</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v12M12 3v18m-4.5-9h9m4.5 0H7.5" />
-                                </svg>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mt-4 text-sm font-medium">
-                                <div class="col-span-1">
-                                    <p class="text-gray-300">Actual Inbound</p>
-                                    <p id="actual-inbound-data" class="text-2xl font-bold mt-1">Memuat...</p>
+                        <div class="lg:col-span-2 bg-gradient-to-br from-teal-500 to-cyan-600 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold uppercase">FM Projection vs Actual</h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 opacity-80">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v18h18" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.75 6l-6.75 6.75-3.75-3.75L3 18" />
+                                    </svg>
                                 </div>
-                                <div class="col-span-1">
-                                    <p class="text-gray-300">Actual Outbound</p>
-                                    <p id="actual-outbound-data" class="text-2xl font-bold mt-1">Memuat...</p>
-                                </div>
-                                <div class="col-span-2 flex justify-between mt-2">
-                                    <div>
-                                        <p class="text-gray-300">Gap Inbound</p>
-                                        <p id="gap-inbound-data" class="text-lg font-bold mt-1 text-yellow-300">Memuat...</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 text-center">
+                                    <div id="date-1-container" class="space-y-2">
+                                        <p id="date-1-label" class="font-bold text-lg">...</p>
+                                        <div class="grid grid-cols-2 gap-2 bg-black bg-opacity-10 rounded-lg p-3">
+                                            <div>
+                                                <p class="text-xs font-light opacity-80">Projection</p>
+                                                <p id="fm-projection-value-1" class="text-xl font-bold tracking-tighter">Memuat...</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs font-light opacity-80">Actual</p>
+                                                <p id="fm-actual-value-1" class="text-xl font-bold tracking-tighter">Memuat...</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p class="text-gray-300">Gap Outbound</p>
-                                        <p id="gap-outbound-data" class="text-lg font-bold mt-1 text-yellow-300">Memuat...</p>
+                                    <div id="date-2-container" class="space-y-2">
+                                        <p id="date-2-label" class="font-bold text-lg">...</p>
+                                        <div class="grid grid-cols-2 gap-2 bg-black bg-opacity-10 rounded-lg p-3">
+                                            <div>
+                                                <p class="text-xs font-light opacity-80">Projection</p>
+                                                <p id="fm-projection-value-2" class="text-xl font-bold tracking-tighter">Memuat...</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs font-light opacity-80">Actual</p>
+                                                <p id="fm-actual-value-2" class="text-xl font-bold tracking-tighter">Memuat...</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <p class="text-xs font-light opacity-80 mt-4 text-center">Data berdasarkan Projection FM Alert</p>
                         </div>
 
-                        <div class="bg-orange-500 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="text-lg font-semibold uppercase">PENDING PARCEL</h3>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-                                </svg>
+
+                        <div class="lg:col-span-2 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="text-lg font-semibold uppercase">Upcoming DC</h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 opacity-80">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM15.75 18.75a1.5 1.5 0 01-3 0 1.5 1.5 0 013 0zM12 11.25V9m-4.5-2.25h9a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18V9.75a2.25 2.25 0 012.25-2.25z" />
+                                    </svg>
+                                </div>
+                                <div class="text-center mb-4">
+                                    <p class="text-sm opacity-80">Total Upcoming</p>
+                                    <p id="upcoming-dc-total" class="text-5xl font-extrabold tracking-tight">Memuat...</p>
+                                </div>
+                                <div class="grid grid-cols-3 gap-4 text-center border-t border-white border-opacity-20 pt-4">
+                                    <div>
+                                        <p class="text-xs font-bold opacity-80">S01</p>
+                                        <p id="upcoming-dc-s01" class="text-xl font-semibold">...</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold opacity-80">S02</p>
+                                        <p id="upcoming-dc-s02" class="text-xl font-semibold">...</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold opacity-80">S03</p>
+                                        <p id="upcoming-dc-s03" class="text-xl font-semibold">...</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-4 mt-4 text-sm font-medium">
-                                <div>
-                                    <p class="text-gray-200">Pending Packed</p>
-                                    <p id="pending-packed-data" class="text-3xl font-bold mt-1">Memuat...</p>
+                            <p class="text-xs font-light opacity-80 mt-4 text-center">Data berdasarkan Tarikan Outbound Yard</p>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-gradient-to-br from-purple-600 to-violet-700 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold uppercase">Productivity</h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 opacity-80">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.519l2.74-1.22m0 0-3.94-3.94m3.94 3.94-3.94 3.94" />
+                                    </svg>
                                 </div>
-                                <div>
-                                    <p class="text-gray-200">Pending Loading</p>
-                                    <p id="pending-loading-data" class="text-3xl font-bold mt-1">Memuat...</p>
+                                <div class="grid grid-cols-2 gap-4 text-center divide-x divide-white divide-opacity-20">
+                                    <div class="space-y-2 pr-4">
+                                        <p class="text-md font-bold text-violet-200">INBOUND</p>
+                                        <div>
+                                            <p class="text-xs opacity-80">Actual</p>
+                                            <p id="actual-inbound-data" class="text-3xl font-bold tracking-tight">Memuat...</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs opacity-80">Gap</p>
+                                            <p id="gap-inbound-data" class="text-xl font-semibold text-yellow-300">Memuat...</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2 pl-4">
+                                        <p class="text-md font-bold text-violet-200">OUTBOUND</p>
+                                        <div>
+                                            <p class="text-xs opacity-80">Actual</p>
+                                            <p id="actual-outbound-data" class="text-3xl font-bold tracking-tight">Memuat...</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs opacity-80">Gap</p>
+                                            <p id="gap-outbound-data" class="text-xl font-semibold text-yellow-300">Memuat...</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-4 mt-4 text-sm font-medium">
-                                <div>
-                                    <p class="text-gray-200">Antrian</p>
-                                    <p id="antrian-data" class="text-3xl font-bold mt-1">Memuat...</p>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-gradient-to-br from-orange-500 to-amber-600 text-white rounded-2xl p-6 shadow-xl transform transition-transform duration-300 hover:scale-105 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold uppercase">PENDING PARCEL</h3>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 opacity-80">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h7.5v7.5h-7.5v-7.5Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v5.25m0 0l-3.75-3.75M12 20.25l3.75-3.75" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 3.75H9A2.25 2.25 0 0 0 6.75 6v.093c0 .348.052.69.154 1.022l.738 2.213A2.25 2.25 0 0 0 9.87 11.25H14.13a2.25 2.25 0 0 0 2.128-1.921l.738-2.213A2.25 2.25 0 0 0 17.25 6v-.093A2.25 2.25 0 0 0 15 3.75Z" />
+                                    </svg>
                                 </div>
-                                <div>
-                                    <p class="text-gray-200">Proses Bongkar</p>
-                                    <p id="proses-bongkar-data" class="text-3xl font-bold mt-1">Memuat...</p>
+                                <div class="grid grid-cols-2 gap-4 text-center divide-x divide-white divide-opacity-20">
+                                    <div class="space-y-4 pr-4">
+                                        <p class="text-md font-bold text-amber-200">PENDING</p>
+                                        <div>
+                                            <p class="text-xs opacity-80">Packed</p>
+                                            <p id="pending-packed-data" class="text-3xl font-bold tracking-tight">Memuat...</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs opacity-80">Loading</p>
+                                            <p id="pending-loading-data" class="text-3xl font-bold tracking-tight">Memuat...</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4 pl-4">
+                                        <p class="text-md font-bold text-amber-200">DOCKING</p>
+                                        <div>
+                                            <p class="text-xs opacity-80">Antrian</p>
+                                            <p id="antrian-data" class="text-3xl font-bold tracking-tight">Memuat...</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs opacity-80">Proses Bongkar</p>
+                                            <p id="proses-bongkar-data" class="text-3xl font-bold tracking-tight">Memuat...</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="bg-gray-800 rounded-2xl p-6 shadow-xl mb-12">
+                        <h3 class="text-lg font-semibold uppercase text-gray-200 mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                            </svg>
+                            MENU LAINYA
+                        </h3>
+                        <div id="shortcut-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4">
                         </div>
                     </div>
+
                 </div>
 
                 <div id="reports-content" class="hidden opacity-0 transition-opacity duration-500 ease-in-out">
@@ -246,6 +342,79 @@
                     </div>
                 </div>
 
+                <div id="detailed-pending-content" class="hidden opacity-0 transition-opacity duration-500 ease-in-out">
+                    <h2 class="text-4xl font-extrabold text-gray-100 mb-6 text-center">Detailed Pending Loading</h2>
+                    <p id="pending-last-update" class="text-center text-gray-400 -mt-4 mb-8">Memuat...</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+                        <div class="lg:col-span-2 bg-gradient-to-br from-gray-700 to-gray-800 text-white rounded-2xl p-6 shadow-xl flex flex-col justify-between transform transition-transform duration-300 hover:scale-105">
+                            <div class="grid grid-cols-2 gap-4 text-center divide-x divide-gray-600">
+                                <div class="space-y-2 pr-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 16.382V5.618a1 1 0 00-.553-.894L15 2m-6 5l6-3m-6 3l6 10" />
+                                        </svg>
+                                        <h3 class="text-lg font-semibold uppercase text-sky-400">Inner</h3>
+                                    </div>
+                                    <p id="pending-inner-total" class="text-5xl font-extrabold mt-2">Memuat...</p>
+                                </div>
+                                <div class="space-y-2 pl-4">
+                                     <div class="flex items-center justify-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.881 4.109A1.5 1.5 0 006.12 6H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-2.12a1.5 1.5 0 00-1.762-1.891l-1.414-1.414A1.5 1.5 0 009.62 3H8.38a1.5 1.5 0 00-1.262.539l-1.099.77z" />
+                                        </svg>
+                                        <h3 class="text-lg font-semibold uppercase text-teal-400">Outter</h3>
+                                    </div>
+                                    <p id="pending-outter-total" class="text-5xl font-extrabold mt-2">Memuat...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-1 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-2xl p-6 shadow-xl flex flex-col justify-center items-center text-center transform transition-transform duration-300 hover:scale-105">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                                <h3 class="text-lg font-semibold uppercase">Total</h3>
+                            </div>
+                            <p id="pending-grand-total" class="text-5xl font-extrabold mt-2">Memuat...</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-100 mb-4 text-center">Destinasi Inner</h3>
+                            <div class="bg-gray-800 rounded-2xl p-1 table-container">
+                                <table class="w-full text-sm text-center text-gray-300">
+                                    <thead class="text-xs text-gray-400 uppercase">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left">Next Station</th>
+                                            <th scope="col" class="px-6 py-3">Qty Parcel</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detailed-pending-inner-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-100 mb-4 text-center">Destinasi Outter</h3>
+                            <div class="bg-gray-800 rounded-2xl p-1 table-container">
+                                <table class="w-full text-sm text-center text-gray-300">
+                                    <thead class="text-xs text-gray-400 uppercase">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left">Next Station</th>
+                                            <th scope="col" class="px-6 py-3">Qty Parcel</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detailed-pending-outter-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="pictask-content" class="hidden opacity-0 transition-opacity duration-500 ease-in-out">
                     <h2 class="text-4xl font-extrabold text-gray-100 mb-4">PIC Task</h2>
                     <p class="text-gray-400 text-sm mb-4">Wajib Report Di Grup PIC jika sudah Done.</p>
@@ -257,16 +426,22 @@
                 
                 <div id="operator-list-content" class="hidden opacity-0 transition-opacity duration-500 ease-in-out">
                     <h2 class="text-4xl font-extrabold text-gray-100 mb-4">List Operator Diluar Floor</h2>
-                    <div class="mb-6 flex flex-col sm:flex-row items-center gap-4">
-                        <label for="filter-date-operator" class="text-gray-300 font-medium whitespace-nowrap">Filter Tanggal:</label>
-                        <input type="date" id="filter-date-operator" class="p-2 rounded-lg bg-gray-700 text-gray-100 border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <label for="filter-role-operator" class="text-gray-300 font-medium whitespace-nowrap">Operator:</label>
-                        <select id="filter-role-operator" class="p-2 rounded-lg bg-gray-700 text-gray-100 border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="Semua">Semua</option>
-                            <option value="Dedicate">Dedicate</option>
-                            <option value="DW">Daily Worker</option>
-                        </select>
-                        <button id="apply-filter-btn-operator" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 whitespace-nowrap">Apply</button>
+                    <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <label for="filter-date-operator" class="text-gray-300 font-medium whitespace-nowrap">Filter Tanggal:</label>
+                            <input type="date" id="filter-date-operator" class="p-2 rounded-lg bg-gray-700 text-gray-100 border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label for="filter-role-operator" class="text-gray-300 font-medium whitespace-nowrap">Operator:</label>
+                            <select id="filter-role-operator" class="p-2 rounded-lg bg-gray-700 text-gray-100 border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="Semua">Semua</option>
+                                <option value="Dedicate">Dedicate</option>
+                                <option value="DW">Daily Worker</option>
+                            </select>
+                            <button id="apply-filter-btn-operator" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 whitespace-nowrap">Apply</button>
+                        </div>
+                        <div class="flex items-center gap-2 p-2 bg-gray-700 rounded-lg w-full sm:w-auto justify-center">
+                            <span class="text-sm font-medium text-gray-300">Total Operator Keluar:</span>
+                            <span id="operator-out-count" class="text-lg font-bold text-white">...</span>
+                        </div>
                     </div>
                     <div class="bg-gray-700 rounded-2xl p-6 table-container">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -279,10 +454,37 @@
                 </div>
 
                 <div id="check-operator-profile-content" class="hidden opacity-0 transition-opacity duration-500 ease-in-out">
-                    <h2 class="text-4xl font-extrabold text-gray-100 mb-4">Check Operator Profile</h2>
-                    <div class="bg-gray-700 rounded-2xl p-6 flex flex-col items-center text-center">
-                        <p class="text-gray-400 text-sm mb-4">Di halaman ini bisa untuk mengecek detail lengkap operator berdasarkan OpsID. Fitur ini akan ditambahkan secepat nya. :)</p>
+                    <h2 class="text-4xl font-extrabold text-gray-100 mb-6">Check Operator Profile</h2>
+                    
+                    <div class="mb-8 max-w-lg mx-auto">
+                        <div class="relative">
+                            <input type="text" id="ops-id-search-input" placeholder="Masukan OpsID untuk mencari..." class="w-full p-4 pl-12 text-lg bg-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div id="operator-profile-card" class="hidden max-w-lg mx-auto bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+                        <div class="md:flex">
+                            <div class="flex justify-center p-6 md:p-0 md:flex-shrink-0">
+                                <img id="profile-image" class="h-32 w-32 rounded-full object-cover md:h-48 md:w-48 md:rounded-none" src="https://placehold.co/400x400/374151/E5E7EB?text=Photo" alt="Operator Photo">
+                            </div>
+                            <div class="p-8 text-center md:text-left">
+                                <div id="profile-opsid" class="uppercase tracking-wide text-sm text-indigo-400 font-semibold">...</div>
+                                <h3 id="profile-name" class="block mt-1 text-2xl leading-tight font-bold text-white">...</h3>
+                                <p id="profile-role" class="mt-2 text-gray-400 text-lg">...</p>
+                                <p id="profile-vendor" class="mt-2 text-gray-500">...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="profile-not-found" class="hidden text-center max-w-lg mx-auto bg-gray-800 p-8 rounded-2xl">
+                        <p class="text-lg text-gray-300">Operator not found. Please check the OpsID and try again.</p>
+                    </div>
+
                 </div>
 
                 <div id="contact-dev-content" class="hidden opacity-0 transition-opacity duration-500 ease-in-out">
@@ -307,13 +509,15 @@
                         </div>
                         <a href="https://wa.me/6287899604277" target="_blank" class="mt-4 flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                <path d="M12.04 2.87c-5.06 0-9.17 4.1-9.17 9.17 0 1.54.4 2.99 1.15 4.3l-1.18 4.31 4.4-1.15c1.24.68 2.65 1.04 4.09 1.04 5.06 0 9.17-4.1 9.17-9.17 0-5.06-4.11-9.17-9.17-9.17zm4.72 13.92c-.28.18-.58.3-.9.34s-.65.04-.97.02c-.31-.02-.63-.07-.95-.12-.32-.05-.63-.12-.93-.24-.3-.11-.58-.26-.85-.43-.27-.18-.52-.38-.75-.6-.23-.22-.43-.46-.6-.73-.17-.27-.29-.54-.42-.85-.13-.31-.2-.64-.26-.97s-.05-.65-.02-.97.08-.63.13-.94.13-.6.2-.89c.07-.3.16-.58.26-.85s-.23-.52.4-.75c.18-.23.38-.43.6-.6.22-.18.46-.35.73-.47s.54-.21.85-.29c.31-.08.64-.13.97-.18s.65-.05.97-.02c.32.02.63.08.95.13s.63.12.93.24c.3.11.58.26.85.43.27.18.52.38.75.6.23.22.43.46.6.73.17.27.29.54.42.85.13.31.2.64.26.97.06.33.05.65.02.97s-.08.63-.13.94-.13.6-.2.89c-.07.3-.16.58-.26.85-.11.3-.26.58-.43.85z" />
+                                <path d="M12.04 2.87c-5.06 0-9.17 4.1-9.17 9.17 0 1.54.4 2.99 1.15 4.3l-1.18 4.31 4.4-1.15c1.24.68 2.65 1.04 4.09 1.04 5.06 0 9.17-4.1 9.17-9.17 0-5.06-4.11-9.17-9.17-9.17zm4.72 13.92c-.28.18-.58.3-.9.34s-.65.04-.97.02c-.31-.02-.63-.07-.95-.12-.32-.05-.63-.12-.93-.24-.3-.11-.58-.26-.85-.43-.27-.18-.52-.38-.75-.6-.23-.22-.43-.46-.6-.73-.17-.27-.29-.54-.42-.85-.13-.31-.2-.64-.26-.97s-.05-.65-.02-.97.08-.63.13-.94.13-.6.2-.89c.07-.3.16-.58.26-.85s-.23-.52.4-.75c.18-.23.38-.43.6-.6.22-.18.46-.35.73-.47s.54-.21.85-.29c.31-.08.64-.13.97-.18s.65-.05.97-.02c.32.02.63.08.95.13s.63.12.93.24c.3.11.58.26.85.43.27.18.52.38.75.6.23.22.43.46.6.73.17.27.29.54.42-.85.13.31.2.64.26.97.06.33.05.65.02.97s-.08.63-.13.94-.13.6-.2.89c-.07.3-.16.58-.26-.85-.11.3-.26.58-.43.85z" />
                             </svg>
                             <span>Hubungi via WhatsApp</span>
                         </a>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </div>
 
@@ -326,6 +530,5 @@
         </button>
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>
