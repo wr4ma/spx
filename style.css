@@ -1,6 +1,6 @@
 #chart-container {
     position: relative;
-    height: 300px;
+    height: 300px; 
 }
 @media (min-width: 640px) {
     #chart-container {
@@ -59,9 +59,9 @@
     animation: blink 1.5s linear infinite;
 }
 .table-container {
-    max-height: 500px;
+    max-height: 500px; 
     overflow-y: auto;
-    border-radius: 1rem;
+    border-radius: 1rem; 
 }
 table {
     width: 100%;
@@ -69,30 +69,30 @@ table {
 }
 th, td {
     padding: 1rem;
-    text-align: center;
-    border-bottom: 1px solid #4b5563;
+    text-align: center; 
+    border-bottom: 1px solid #4b5563; 
 }
 th {
-    background-color: #4b5563;
+    background-color: #4b5563; 
     color: #ffffff;
     position: sticky;
     top: 0;
     z-index: 10;
 }
 tr:nth-child(even) {
-    background-color: #1f2937;
+    background-color: #1f2937; 
 }
 tr:nth-child(odd) {
-    background-color: #374151;
+    background-color: #374151; 
 }
 th, td {
-    color: #d1d5db;
+    color: #d1d5db; 
 }
 .manpower-plan-cell {
-    background-color: rgba(255, 100, 0, 0.1);
+    background-color: rgba(255, 100, 0, 0.1); 
 }
 .manpower-actual-cell {
-    background-color: rgba(0, 200, 0, 0.1);
+    background-color: rgba(0, 200, 0, 0.1); 
 }
 #refresh-container {
     position: fixed;
@@ -128,13 +128,13 @@ th, td {
     opacity: 1;
 }
 .date-cell {
-    background-color: #1a202c;
+    background-color: #1a202c; 
 }
 .ops-info-cell {
-    background-color: rgba(67, 135, 230, 0.15);
+    background-color: rgba(67, 135, 230, 0.15); 
 }
 .purpose-cell {
-    background-color: rgba(246, 173, 85, 0.15);
+    background-color: rgba(246, 173, 85, 0.15); 
 }
 #pic-task-list li {
     padding: 1rem;

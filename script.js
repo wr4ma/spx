@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let manpowerData = [];
     let hourlyData = [];
     let operatorData = [];
-    let operatorProfileData = [];
-    let detailedPendingData = {};
+    let operatorProfileData = []; 
+    let detailedPendingData = {}; 
 
     const initializeFirebasePresence = () => {
          const firebaseConfig = {
@@ -170,11 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pendingData.antrian) antrianData.textContent = formatNumber(pendingData.antrian);
             if (pendingData.prosesBongkar) prosesBongkarData.textContent = formatNumber(pendingData.prosesBongkar);
 
-            const opsCol = 44;
-            const nameCol = 45;
-            const vendorCol = 46;
-            const roleCol = 47;
-            const photoCol = 48;
+            const opsCol = 44; 
+            const nameCol = 45; 
+            const vendorCol = 46; 
+            const roleCol = 47; 
+            const photoCol = 48; 
             
             operatorProfileData = rows.slice(2).map(row => ({
                 opsId: (row[opsCol] || '').trim(),
@@ -191,15 +191,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (station) {
                     innerData.push({ station: station, qty: formatNumber(rows[i][52]) });
                 } else {
-                    break;
+                    break; 
                 }
             }
-            for(let i=2; i < rows.length; i++) {
+             for(let i=2; i < rows.length; i++) {
                 const station = rows[i][53] ? rows[i][53].trim() : '';
                 if (station) {
                     outterData.push({ station: station, qty: formatNumber(rows[i][54]) });
                 } else {
-                    break;
+                    break; 
                 }
             }
 
@@ -292,8 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderHourlyTable = (data) => {
         const tableHead = document.getElementById('hourly-table-head');
         const tableBody = document.getElementById('hourly-table-body');
-        tableHead.innerHTML = '';
-        tableBody.innerHTML = '';
+        tableHead.innerHTML = ''; 
+        tableBody.innerHTML = ''; 
 
         if (data.length <= 1) {
             tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-gray-400">Tidak ada data untuk tanggal yang dipilih.</td></tr>`;
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const filteredData = [hourlyData[0]];
+        const filteredData = [hourlyData[0]]; 
         const datePartsSelected = selectedDate.split('-');
         const selectedDateNormalized = `${datePartsSelected[0]}-${datePartsSelected[1]}-${datePartsSelected[2]}`;
 
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableHead.innerHTML = '';
         tableBody.innerHTML = '';
 
-        if (data.length <= 1) {
+        if (data.length <= 1) { 
             tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-gray-400">Tidak ada data untuk tanggal yang dipilih.</td></tr>`;
             return;
         }
@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cell = document.createElement('td');
                     let cellText = row[j] ? row[j].trim().replace(/^"|"$/g, '') : '';
                     
-                    if (j === 18) {
+                    if (j === 18) { 
                         cell.textContent = formatTime(cellText);
                     } else {
                         cell.textContent = formatNumber(cellText);
@@ -453,11 +453,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedDate = dateInput.value;
         
         if (!selectedDate) {
-            renderManpowerTable(manpowerData);
+            renderManpowerTable(manpowerData); 
             return;
         }
         
-        const filteredData = [manpowerData[0]];
+        const filteredData = [manpowerData[0]]; 
         
         const datePartsSelected = selectedDate.split('-');
         const selectedDateNormalized = `${datePartsSelected[0]}-${datePartsSelected[1]}-${datePartsSelected[2]}`;
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-1.042l-4.242 4.242-1.957-1.957a.75.75 0 0 0-1.06 1.06l2.5 2.5a.75.75 0 0 0 1.06 0l4.75-4.75Z" clip-rule="evenodd" />
                         </svg>` :
                         `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ${iconColor} flex-shrink-0">
-                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75 9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
                         </svg>`;
                     
                     const li = document.createElement('li');
@@ -738,7 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const sidebarNavLinks = document.querySelectorAll('#sidebar-nav .nav-link');
         
         if (!shortcutGrid) return;
-        shortcutGrid.innerHTML = '';
+        shortcutGrid.innerHTML = ''; 
 
         sidebarNavLinks.forEach(link => {
             const targetId = link.dataset.target;
