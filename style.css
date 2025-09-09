@@ -1,12 +1,14 @@
+/* Custom styles for the graph container to ensure it's responsive */
 #chart-container {
     position: relative;
-    height: 300px; 
+    height: 300px; /* Default height for the chart */
 }
 @media (min-width: 640px) {
     #chart-container {
         height: 400px;
     }
 }
+/* Style for the sidebar menu */
 .sidebar {
     position: fixed;
     top: 0;
@@ -37,6 +39,7 @@
     visibility: visible;
 }
 
+/* Desktop sidebar layout */
 @media (min-width: 1024px) {
     .sidebar {
         transform: translateX(0);
@@ -51,6 +54,7 @@
     }
 }
 
+/* Keyframes for blinking animation */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
@@ -58,10 +62,11 @@
 .animate-blink {
     animation: blink 1.5s linear infinite;
 }
+/* Style for the table */
 .table-container {
-    max-height: 500px; 
+    max-height: 500px; /* Set a max height for scrolling */
     overflow-y: auto;
-    border-radius: 1rem; 
+    border-radius: 1rem; /* rounded-xl equivalent */
 }
 table {
     width: 100%;
@@ -69,38 +74,37 @@ table {
 }
 th, td {
     padding: 1rem;
-    text-align: center; 
-    border-bottom: 1px solid #4b5563; 
+    text-align: center; /* Mengubah rataan ke tengah */
+    border-bottom: 1px solid #4b5563; /* gray-600 equivalent */
 }
 th {
-    background-color: #4b5563; 
+    background-color: #4b5563; /* Mengubah warna header */
     color: #ffffff;
     position: sticky;
     top: 0;
     z-index: 10;
 }
 tr:nth-child(even) {
-    background-color: #1f2937; 
+    background-color: #1f2937; /* gray-800 equivalent, lebih gelap */
 }
 tr:nth-child(odd) {
-    background-color: #374151; 
+    background-color: #374151; /* gray-700 equivalent, lebih terang */
 }
 th, td {
-    color: #d1d5db; 
+    color: #d1d5db; /* gray-300 equivalent, agar lebih mudah dibaca */
 }
 .manpower-plan-cell {
-    background-color: rgba(255, 100, 0, 0.1); 
+    background-color: rgba(255, 100, 0, 0.1); /* Subtle orange for 'Plan' */
 }
 .manpower-actual-cell {
-    background-color: rgba(0, 200, 0, 0.1); 
+    background-color: rgba(0, 200, 0, 0.1); /* Subtle green for 'Actual' */
 }
+/* Floating Refresh Button */
 #refresh-container {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
     z-index: 100;
-    display: flex;
-    align-items: center;
 }
 #refresh-btn {
     background-color: rgba(59, 130, 246, 0.7);
@@ -115,33 +119,24 @@ th, td {
     background-color: rgba(59, 130, 246, 1);
     transform: scale(1.1);
 }
-#refresh-message {
-    margin-right: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #374151;
-    color: #d1d5db;
-    border-radius: 0.5rem;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-#refresh-message.visible {
-    opacity: 1;
-}
+/* Added class for cell coloring */
 .date-cell {
-    background-color: #1a202c; 
+    background-color: #1a202c; /* darker background color for date column */
 }
 .ops-info-cell {
-    background-color: rgba(67, 135, 230, 0.15); 
+    background-color: rgba(67, 135, 230, 0.15); /* blueish background */
 }
 .purpose-cell {
-    background-color: rgba(246, 173, 85, 0.15); 
+    background-color: rgba(246, 173, 85, 0.15); /* orangish background */
 }
+/* PIC Task List Item Styling */
 #pic-task-list li {
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: #374151;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+/* Loading Overlay */
 #loading-overlay {
     position: fixed;
     top: 0;
@@ -161,15 +156,38 @@ th, td {
     opacity: 0;
     pointer-events: none;
 }
-.loading-spinner {
-    width: 60px;
+/* New Bouncing Loader */
+.bouncing-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
     height: 60px;
-    border: 8px solid #4B5563;
-    border-top: 8px solid #3B82F6;
-    border-radius: 50%;
-    animation: spin 1.5s linear infinite;
 }
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.bouncing-loader > div {
+    width: 16px;
+    height: 16px;
+    margin: 3px 6px;
+    border-radius: 50%;
+    background-color: #3B82F6; /* blue-500 */
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+.bouncing-loader > div:nth-child(1) {
+    animation-delay: -0.32s;
+}
+.bouncing-loader > div:nth-child(2) {
+    animation-delay: -0.16s;
+}
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1.0);
+    }
+}
+/* Style for name suggestions */
+#name-suggestions {
+    max-height: 200px;
+    overflow-y: auto;
 }

@@ -1,3 +1,13 @@
+bandung-dc-dashboard/
+├── 📄 index.html
+├── 🎨 style.css
+└── 📁 js/
+    ├── 🚀 main.js
+    ├── ⚙️ config.js
+    ├── ☁️ firebase.js
+    ├── 🌐 api.js
+    ├── 🖌️ ui.js
+
 Google Sheet ID: 19SS9GPTAkEoEQbw9QEaUMDtNKUuAqotZdRW7UoYaNDQ
 Google Sheet GID: 443866641
 URL: https://docs.google.com/spreadsheets/d/19SS9GPTAkEoEQbw9QEaUMDtNKUuAqotZdRW7UoYaNDQ/export?format=csv&gid=443866641
