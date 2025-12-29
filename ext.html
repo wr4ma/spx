@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengalihkan...</title>
+    <style>
+        /* Reset CSS dasar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Warna Background Dark Slate (#1e293b adalah Slate-900) */
+            background-color: #1e293b;
+            /* Warna Teks Slate Muda */
+            color: #cbd5e1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        /* Membuat Animasi Spinner */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #334155; /* Warna lingkaran redup */
+            border-top: 5px solid #38bdf8; /* Warna aksen biru terang */
+            border-radius: 50%;
+            margin: 0 auto 20px auto; /* Posisi tengah */
+            animation: putar 1s linear infinite;
+        }
+
+        h2 {
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+
+        /* Definisi Keyframes untuk animasi putar */
+        @keyframes putar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="spinner"></div>
+        <h2>Mohon Tunggu</h2>
+        <p>Sedang mengalihkan ke halaman utama...</p>
+        
+        <p style="margin-top: 20px; font-size: 0.8rem;">
+            Jika tidak dialihkan otomatis, <a href="https://wr4ma.github.io">klik di sini</a>.
+        </p>
+    </div>
+
+    <script>
+        // Fungsi Redirect
+        setTimeout(function() {
+            window.location.href = "https://wr4ma.github.io";
+        }, 3000); // Angka 3000 berarti 3 detik (3000 milidetik)
+    </script>
+
+</body>
+</html>
